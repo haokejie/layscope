@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "layscope",
+  "description": "LayScope inspects page layout and component structure in Codex Browser using the same core as its Chrome/Edge extension.",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "LayScope",
+        "shortDescription": "检查页面布局与组件结构",
+        "longDescription": "在 Codex 内置 Browser 查看页面布局边界、组件名称和可折叠层级。与 LayScope Chrome／Edge 浏览器扩展共用核心，支持悬停预览、选择、侧挂详情、面板拖拽调宽及完整清理。需要当前浏览器工具提供 CDP capability；此插件通过会话显式加载，页面自动加载规则仅由 Chrome／Edge 扩展提供。",
+        "category": "Developer Tools",
+        "capabilities": [
+          "页面布局检查",
+          "组件层级识别",
+          "元素详情与高亮"
+        ]
+      }
+    }
+  },
+  "homepage": "https://github.com/haokejie/layscope",
+  "repository": "https://github.com/haokejie/layscope"
+}

@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>LayScope 验收页</title>
+<body><main data-layout-component="Workspace"><h1>LayScope 验收页</h1>
+<p>此页不自动加载检查器，用于扩展和 Codex Browser 的生命周期验收。</p>
+<section data-layout-component="ProjectList"><h2>项目管理</h2><form><label>搜索项目 <input name="query"></label><button type="button" id="business">业务按钮</button></form>
+<table data-slot="table"><thead><tr><th>项目</th><th>状态</th></tr></thead><tbody><tr><td>示例项目</td><td>启用</td></tr></tbody></table></section>
+<p id="clicks">业务点击：0</p><button id="audit" type="button">运行 20 轮生命周期验收</button><output id="result" role="status">尚未运行</output>
+<p><button id="features" type="button">运行检查功能验收</button><output id="feature-result">尚未运行</output></p>
+<p><button id="hierarchy-audit" type="button">运行深层级与宽度验收</button><output id="hierarchy-result">尚未运行</output></p>
+</main><script src="fixture.js" type="module"></script></body></html>

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "LayScope — Layout & Component Inspector",
+  "short_name": "LayScope",
+  "description": "LayScope 浏览器扩展：检查页面布局、组件边界与层级，支持 Vue 3 和显式组件标记。",
+  "minimum_chrome_version": "106",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "rules.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "LayScope",
+    "default_popup": "popup.html"
+  },
+  "homepage_url": "https://github.com/haokejie/layscope"
+}

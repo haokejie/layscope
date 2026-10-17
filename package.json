@@ -1,0 +1,26 @@
+{
+  "name": "layscope",
+  "version": "0.8.1",
+  "private": true,
+  "description": "LayScope — browser extension for inspecting page layout and components, with a shared Codex Browser core.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/serve.mjs",
+    "fixture:vue": "node scripts/prepare-vue-fixture.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "npm@10.9.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haokejie/layscope.git"
+  },
+  "homepage": "https://github.com/haokejie/layscope#readme",
+  "bugs": {
+    "url": "https://github.com/haokejie/layscope/issues"
+  }
+}

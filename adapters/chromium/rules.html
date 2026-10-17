@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>页面规则 · LayScope</title>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="rules-page.css">
+</head>
+<body>
+  <header class="topbar"><strong>LayScope</strong><span>页面规则</span></header>
+  <main>
+    <div class="page-heading"><div><h1>页面规则</h1><p class="muted">管理自动加载的页面、路径与默认布局。</p></div><button id="add-rule" class="primary" type="button" disabled>添加规则</button></div>
+    <div id="settings-fault" class="fault" hidden><p id="settings-error" class="error" role="alert"></p><button id="retry" type="button">重试</button><button id="reload-extension" type="button" hidden>更新扩展</button></div>
+    <div class="toolbar"><input id="search" type="search" aria-label="搜索域名或路径" placeholder="搜索域名或路径" autocomplete="off"><select id="filter" aria-label="规则状态"><option value="all">全部状态</option><option value="enabled">已启用</option><option value="disabled">已停用</option><option value="ungranted">需授权</option></select><span id="rule-count" class="muted" role="status">读取中…</span></div>
+    <div class="table-wrap"><table><thead><tr><th scope="col">页面或路径</th><th scope="col">自动加载</th><th scope="col">默认布局</th><th scope="col">操作</th></tr></thead><tbody id="rule-list"></tbody></table><p id="empty" class="empty" hidden>还没有页面规则，点击“添加规则”开始。</p></div>
+    <footer><p>默认布局仅影响下次自动加载；面板始终保持收起。</p><p>主机授权可能覆盖所有端口，规则仍精确区分端口。</p></footer>
+  </main>
+  <dialog id="add-dialog" aria-labelledby="add-title">
+    <form id="rule-form" novalidate>
+      <h2 id="add-title">添加页面规则</h2><label for="pattern">页面地址或路径</label><input id="pattern" type="text" maxlength="2048" placeholder="https://example.com/admin/*" autocomplete="off" spellcheck="false" aria-describedby="pattern-help form-error">
+      <p id="pattern-help" class="hint">* 匹配任意路径；忽略查询参数和 # 片段。新规则默认隐藏布局，可在列表单独调整。</p>
+      <p id="form-error" class="error" role="alert" hidden></p>
+      <p class="hint permission-hint">添加时申请此主机的访问权限，浏览器授权覆盖全部端口。</p>
+      <div class="dialog-actions"><button id="cancel-add" type="button">取消</button><button id="save-rule" class="primary" type="submit">添加规则</button></div>
+    </form>
+  </dialog>
+  <dialog id="delete-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">删除此规则？</h2><p id="delete-pattern" class="delete-pattern"></p><p class="hint">本页已加载的检查器不会被移除。删除同一主机的最后一条规则时，会同时撤销该主机的常驻权限。</p>
+    <p id="delete-error" class="error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-delete" type="button">取消</button><button id="confirm-delete" class="danger" type="button">删除规则</button></div>
+  </dialog>
+  <script src="rules-page.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+body { width:360px; max-width:100%; }
+main { padding:18px; }
+header,.section-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+header { margin-bottom:16px; }
+h1 { font-size:16px; font-weight:650; }
+.badge { color:var(--muted); background:var(--surface); border-radius:12px; padding:2px 7px; font-size:11px; white-space:nowrap; }
+.badge[data-state=open],.badge[data-state=closed] { color:#20734c; background:#edf7f1; }
+.page-address { padding-bottom:16px; }
+#page-host { font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#page-path { color:var(--muted); font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+section { border-top:1px solid var(--line); padding:13px 0; }
+.section-heading { min-height:23px; margin-bottom:6px; }
+h2 { font-size:12px; font-weight:650; }
+.setting-row,.inherited-row { display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:34px; cursor:pointer; }
+.setting-row small { display:block; font-size:11px; font-weight:400; color:var(--muted); margin:1px 0 4px; }
+.default-row { border-left:2px solid var(--line); padding-left:12px; margin-top:4px; }
+#auto-note { margin-top:5px; }
+#auto-note:not([data-error=true]) { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#auto-note[data-error=true] { color:#8d6123; }
+.inherited-row { cursor:default; }
+.inherited-row button { display:flex; align-items:center; gap:4px; }
+footer { border-top:1px solid var(--line); padding-top:12px; }
+.manage-rules { display:flex; width:100%; align-items:center; justify-content:space-between; border:0; padding:2px 0; color:var(--accent); background:transparent; font-size:12px; }
+.manage-rules:hover:not(:disabled) { background:transparent; }
+.rule-meta { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; }
+.shortcut { margin-top:12px; }
+#page-error { margin:0 0 10px; }
+.legacy-row { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0 12px; }
+.legacy-row button,#reload-extension { padding:4px 8px; font-size:11px; }

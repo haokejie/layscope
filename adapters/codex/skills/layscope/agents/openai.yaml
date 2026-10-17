@@ -1,0 +1,4 @@
+interface:
+  display_name: "LayScope"
+  short_description: "在 Codex 内置 Browser 检查页面布局与组件结构"
+  default_prompt: "使用 LayScope 检查当前页面的布局边界、组件层级和元素详情。"

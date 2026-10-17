@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LayScope · 布局检查</title>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header><h1>LayScope</h1><span id="state" class="badge" role="status">读取中</span></header>
+    <div class="page-address"><p id="page-host">正在读取页面…</p><p id="page-path"></p></div>
+    <p id="page-error" class="error" role="alert" hidden></p>
+    <div id="legacy-row" class="legacy-row" hidden><p class="notice">页面实例需要更新</p><button id="update-instance" type="button">更新实例</button></div>
+    <section aria-labelledby="current-heading">
+      <div class="section-heading"><h2 id="current-heading">当前页面</h2><button id="remove-inspector" class="text-button danger" type="button" hidden>移除</button></div>
+      <label class="setting-row" for="panel-visible"><span>面板</span><input id="panel-visible" class="switch" type="checkbox" role="switch" disabled></label>
+      <label class="setting-row" for="layout-visible"><span>显示布局</span><input id="layout-visible" class="switch" type="checkbox" role="switch" disabled></label>
+      <label class="setting-row" for="launcher-visible"><span>悬浮入口<small id="launcher-note">加载后可设置</small></span><input id="launcher-visible" class="switch" type="checkbox" role="switch" disabled></label>
+    </section>
+    <section aria-labelledby="auto-heading">
+      <div class="section-heading"><h2 id="auto-heading">自动加载</h2><button id="reload-extension" type="button" hidden>更新扩展</button></div>
+      <label id="auto-row" class="setting-row" for="auto-page"><span>此页面自动加载</span><input id="auto-page" class="switch" type="checkbox" role="switch" disabled></label>
+      <div id="inherited-row" class="inherited-row" hidden><span>此页面自动加载</span><button id="manage-inherited" class="text-button" type="button"><span id="inherited-status">由规则管理</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button></div>
+      <div id="default-row" class="default-row" hidden><label class="setting-row" for="default-layout"><span>默认显示布局<small>仅影响下次自动加载</small></span><input id="default-layout" class="switch" type="checkbox" role="switch"></label></div>
+      <p id="auto-note" class="hint" role="status" hidden></p>
+    </section>
+    <footer>
+      <button id="manage-rules" class="manage-rules" type="button"><span>管理页面规则</span><span class="rule-meta"><span id="rule-count"></span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></span></button>
+      <p class="hint shortcut">Alt + Shift + L 打开 / 收起面板</p>
+    </footer>
+  </main>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

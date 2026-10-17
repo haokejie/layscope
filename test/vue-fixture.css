@@ -1,0 +1,10 @@
+body { margin: 0; padding: 28px; color: #182235; background: #f8fafc; font: 14px/1.6 system-ui, sans-serif; }
+main { max-width: 1120px; margin: auto; }
+h1 { font-size: 24px; }
+h2 { font-size: 17px; margin: 0 0 10px; }
+section, article { border: 1px solid #dce2eb; border-radius: 10px; padding: 16px; margin: 12px 0; background: #fff; }
+header { padding: 12px; border: 1px dashed #bdc9d8; }
+.fixture-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+button, input { padding: 7px 12px; font: inherit; border: 1px solid #bdc9d8; background: #fff; border-radius: 6px; }
+button { cursor: pointer; }
+output { color: #245ab8; }
