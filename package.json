@@ -7,9 +7,11 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "package": "node scripts/package.mjs",
     "dev": "node scripts/serve.mjs",
     "fixture:vue": "node scripts/prepare-vue-fixture.mjs",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "test:package": "node --test test/release-package.js"
   },
   "engines": {
     "node": ">=22"

@@ -25,6 +25,21 @@ LayScope 直接运行在浏览器页面上，帮助你查看组件边界、实�
 
 Codex 插件依赖当前浏览器工具提供 CDP capability，是独立接入方式。检查页面本身不要求业务项目安装 npm 包、注入脚本或注册组件；精确组件名称可通过可选标记提供。
 
+## 下载发布包
+
+版本发布后，从 [GitHub Releases](https://github.com/haokejie/layscope/releases) 的 **Assets** 下载对应文件，无需安装 Node.js 或自行构建：
+
+| 文件（以 v0.8.1 为例） | 用途 |
+| --- | --- |
+| `layscope-chromium-v0.8.1.zip` | Chrome／Edge 浏览器扩展 |
+| `layscope-codex-v0.8.1.zip` | Codex 内置 Browser 插件 |
+| `build.json` | 版本号和两端共享核心的 SHA-256 |
+| `SHA256SUMS.txt` | 上述三个文件的 SHA-256 校验值 |
+
+不要将 GitHub 自动生成的 **Source code (zip)** 当作安装包；源码不包含构建后的核心。如果尚无 Release，请按下节从源码构建。
+
+可选校验：将两个 ZIP、`build.json` 和 `SHA256SUMS.txt` 下载到同一目录，在该目录运行 `shasum -a 256 -c SHA256SUMS.txt`（macOS），或 `sha256sum -c SHA256SUMS.txt`（Linux）。
+
 ## 从源码构建
 
 需要 Node.js **22 或更高版本**及 npm。开发环境固定版本见 [.nvmrc](.nvmrc) 和 [package.json](package.json)。
@@ -50,14 +65,16 @@ npm test
 | `dist/codex/` | Codex 插件、技能与共享核心，包含 MIT 协议 |
 | `dist/build.json` | 版本号及共享核心 SHA-256 |
 
-当前通过本地构建安装，仓库尚未提供浏览器商店安装链接或公共插件目录条目。
+可使用 Release 下载包或本地构建产物安装。当前尚未上架浏览器商店，也没有公共 Codex 插件目录条目。
 
 ## 安装 Chrome／Edge 浏览器扩展
 
-1. Chrome 打开 `chrome://extensions`，Edge 打开 `edge://extensions`。
-2. 开启「开发者模式」。
-3. 点击「加载解压缩的扩展」，选择本仓库中的 `dist/chromium/`。
+1. 解压 `layscope-chromium-vX.Y.Z.zip` 到固定目录，例如 `layscope-chromium/`；该目录直接包含 `manifest.json`。从源码构建时使用 `dist/chromium/`。
+2. Chrome 打开 `chrome://extensions`，Edge 打开 `edge://extensions`。
+3. 开启「开发者模式」，点击「加载解压缩的扩展」，选择上一步包含 `manifest.json` 的目录。
 4. 打开需要检查的 HTTP(S) 页面，点击浏览器工具栏中的 **LayScope**；可按需固定到工具栏。
+
+请保留安装目录。后续更新时将新包解压并替换同一目录中的文件，在扩展管理页点击「重新加载」。GitHub 下载包通过开发者模式安装，不会自动更新；无需每次删除并重新安装扩展。
 
 最低支持 Chrome／Edge 106。当前工具界面使用中文，中英文 README 描述同一套功能。
 
@@ -92,7 +109,7 @@ npm test
 
 ## 在 Codex 内置 Browser 使用
 
-构建后，按 [Codex 接入说明](adapters/codex/README.md#安装与使用)把 `dist/codex/` 注册为本地插件来源，在支持的客户端安装并启用 **LayScope**，然后可以在会话中说：
+解压 `layscope-codex-vX.Y.Z.zip`，得到直接包含 `plugin.json`、`skills/` 和 `LICENSE` 的目录；也可使用本地构建的 `dist/codex/`。按 [Codex 接入说明](adapters/codex/README.md#安装与使用)把该目录注册为本地插件来源，在支持的客户端安装并启用 **LayScope**，然后可以在会话中说：
 
 > 用 LayScope 打开当前 Browser 页面的检查面板，先不要显示布局。
 
@@ -131,7 +148,7 @@ Vue 3 已使用 3.5.22 的开发／生产 runtime 验收。缺少组件元数据
 
 LayScope 使用独立的目录、插件／技能 ID、运行时与存储命名空间。按全新工具安装，不读取或迁移旧工具的规则、主机授权和站点偏好，也不删除旧数据。
 
-切换前先关闭或停用旧工具，并刷新原来已注入检查器的页面，避免两套检查器同时运行。Chrome／Edge 重新加载本项目的 `dist/chromium/`；Codex 使用新的 `layscope` 插件条目和技能。自动加载规则需要在 LayScope 中重新设置并授权。
+切换前先关闭或停用旧工具，并刷新原来已注入检查器的页面，避免两套检查器同时运行。Chrome／Edge 加载下载包解压目录或本项目的 `dist/chromium/`；Codex 使用新的 `layscope` 插件条目和技能。自动加载规则需要在 LayScope 中重新设置并授权。
 
 后续更新 LayScope 时保持自己的安装来源路径，在扩展管理页重新加载，再重新打开弹层；页面实例提示版本过期时点击「更新实例」，或刷新页面。仅重新构建和刷新业务页不会更新扩展已缓存的后台代码。
 
@@ -140,9 +157,33 @@ LayScope 使用独立的目录、插件／技能 ID、运行时与存储命名�
 ```sh
 npm run dev          # http://127.0.0.1:8094/
 npm run fixture:vue  # 将固定版本 Vue runtime 准备到系统临时目录
+npm run test:package # 验证真实 ZIP、校验值、版本校验及旧产物清理
+npm run package      # 重建两端并生成 dist/release/ 下载文件
 ```
 
 本地服务的 `/` 提供生命周期、功能和深层级验收，`/vue/` 与 `/vue-production/` 使用真实 Vue runtime；`/popup/`、`/rules/` 提供扩展 API 测试替身预览，不替代真实浏览器扩展验收。Vue 准备脚本校验归档 SHA-512，不新增项目依赖。
+
+打包和打包验收需要系统提供 `zip`、`unzip`（macOS 和 GitHub Ubuntu 运行器自带）；普通 `npm test` 仍只需要 Node.js。`npm run package -- v0.8.1` 可同时检查标签是否与源码版本一致。
+
+### GitHub Actions 与版本发布
+
+- [CI](.github/workflows/ci.yml)：推送任意分支、创建或更新 PR 时运行 `npm ci --ignore-scripts`、`npm test` 和 `npm run test:package`；也支持在 Actions 页面手动运行。这里的自动测试发生在代码推送到 GitHub 后，本地 `git commit` 不触发云端工作流。
+- [Release](.github/workflows/release.yml)：推送 `v*` 标签时重新测试、构建和打包，使用 GitHub 自带的 `GITHUB_TOKEN` 创建 Release，自动生成发布说明并附上四个下载文件。无需配置个人 token。
+- 两条工作流均使用公开仓库的标准 `ubuntu-latest` 运行器，关闭包管理器缓存，不上传 Actions 中间产物；正式包直接上传 Release。不会向浏览器商店提交或发布 npm 包。
+
+维护者发布新版本时：
+
+1. 更新根 `package.json` 与 `package-lock.json`，例如运行 `npm version patch --no-git-tag-version`，并提交、推送已检查的变更。版本必须为 `X.Y.Z`，每段不超过 65535，不支持预发布后缀。
+2. 为该提交创建并推送完全匹配的标签，例如版本为 `0.8.2` 时：
+
+   ```sh
+   git tag -a v0.8.2 -m "LayScope v0.8.2"
+   git push origin v0.8.2
+   ```
+
+3. 在 [Actions](https://github.com/haokejie/layscope/actions) 确认 Release 工作流成功，再检查 [Releases](https://github.com/haokejie/layscope/releases) 的下载文件。首次发布也可直接为当前 `0.8.1` 创建 `v0.8.1` 标签，标签指向的提交必须包含发布工作流。
+
+版本或锁文件不一致时中止发布；已有同名 Release 时失败，不覆盖已发布文件。仅推送分支不会发布版本，删除远端标签也不会自动删除已有 Release。
 
 开发资料：[工程规范](CONVENTIONS.md)、[共享核心](packages/core/README.md)、[Chrome／Edge 接入](adapters/chromium/README.md)、[Codex Browser 接入](adapters/codex/README.md)。
 

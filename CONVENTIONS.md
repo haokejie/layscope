@@ -13,6 +13,13 @@
 - 本项目交付跨项目使用的页面结构检查器，范围与当前状态见 [README.md](README.md)。
 - 使用 JavaScript ES Modules；Node 版本入口为 [.nvmrc](.nvmrc)，npm 版本与运行约束见 [package.json](package.json)。依赖锁定在 `package-lock.json`。
 - `npm run build` 生成两端产物；`npm run dev` 在 `127.0.0.1:8094` 提供独立验收页；`npm test` 运行 Node 内置测试。修改核心后先重建，再在已打开页面移除旧实例并加载。
+- `npm run package -- [vX.Y.Z]` 从源码重建并将两端 ZIP、`build.json` 和 `SHA256SUMS.txt` 输出到已忽略的 `dist/release/`，元数据位于 ZIP 根目录。可选标签必须与根版本完全匹配；版本使用符合 Chromium 限制的稳定 `X.Y.Z`，锁文件同步校验。打包使用系统 `zip`／`unzip`，不新增 npm 依赖；`npm run test:package` 单独验收真实安装包，普通 `npm test` 不要求 ZIP 工具。
+
+## CI 与版本发布
+
+- `.github/workflows/ci.yml` 对全部分支的 push、PR 和手动触发运行测试及打包验收；`.github/workflows/release.yml` 仅在 `v*` 标签 push 时发布，并重新执行测试、打包验收及精确标签校验。工作流按 `.nvmrc` 安装 Node，官方 Actions 固定完整 commit SHA。
+- 两条工作流使用公开仓库的免费标准 `ubuntu-latest`，禁用包管理器缓存，不上传 Actions 中间产物；安装包和校验文件直接上传 GitHub Release。CI 仅有 `contents: read`；发布 job 才授予 `contents: write`，使用 GitHub 内置 token，不配置个人 token 或商店凭证。不发布 npm 包、不自动上架商店。
+- 自动发布必须使用包含发布工作流的版本提交，标签严格为根版本前加 `v`；不自动改版本或创建标签。已有同名 Release 时失败，不覆盖公开文件；失败后检查 Actions 日志处理，不通过无条件重试或覆盖掩盖问题。中文与英文 README 的下载、安装、更新和发布说明同步维护。
 
 ## 模块边界
 

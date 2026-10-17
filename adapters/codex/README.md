@@ -10,8 +10,8 @@
 
 本接入运行在 Codex 内置 Browser，与 Chrome／Edge 的浏览器扩展分开安装。需要支持本地插件的客户端和带 CDP capability 的浏览器工具。
 
-1. 在源码根目录运行 `npm ci`、`npm run build`，得到 `dist/codex/`。
-2. 按[官方本地 marketplace 说明](https://developers.openai.com/plugins/build/plugins#install-a-local-plugin-manually)，在使用插件的仓库中添加或合并 `.agents/plugins/marketplace.json`。将本项目构建好的 `dist/codex/` 内容复制到该仓库的 `plugins/layscope/`，保留其中的 `plugin.json`、`skills/` 和 `LICENSE`。
+1. 从 [GitHub Releases](https://github.com/haokejie/layscope/releases) 下载并解压 `layscope-codex-vX.Y.Z.zip`，得到直接包含 `plugin.json`、`skills/` 和 `LICENSE` 的目录；也可在源码根目录运行 `npm ci`、`npm run build`，使用 `dist/codex/`。
+2. 按[官方本地 marketplace 说明](https://developers.openai.com/plugins/build/plugins#install-a-local-plugin-manually)，在使用插件的仓库中添加或合并 `.agents/plugins/marketplace.json`。将上一步下载或构建得到的目录内容复制到该仓库的 `plugins/layscope/`，保留其中的 `plugin.json`、`skills/` 和 `LICENSE`。
 3. marketplace 中新增以下插件条目；若文件已有其他内容，只合并 `plugins` 条目，不覆盖已有来源和设置：
 
 ```json

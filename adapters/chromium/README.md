@@ -6,9 +6,11 @@
 
 悬浮入口可通过面板内的“显示悬浮入口”或弹层的“悬浮入口”开关切换。0.4.0 起按站点记忆，刷新和自动加载继续保持；存储契约由[共享核心](../../packages/core/README.md)维护。入口隐藏后通过 Alt+Shift+L 或工具栏弹层的面板开关恢复面板，面板和布局值保持独立。
 
-运行 `npm run build` 后，在 Chrome 的 `chrome://extensions` 或 Edge 的 `edge://extensions` 打开开发者模式，使用“加载解压缩的扩展”选择本项目 `dist/chromium`。
+从 [GitHub Releases](https://github.com/haokejie/layscope/releases) 下载 `layscope-chromium-vX.Y.Z.zip` 并解压，选择直接包含 `manifest.json` 的固定目录；也可运行 `npm run build` 使用 `dist/chromium`。在 Chrome 的 `chrome://extensions` 或 Edge 的 `edge://extensions` 打开开发者模式，使用“加载解压缩的扩展”选择该目录。不要选择 GitHub 自动生成的源码 ZIP。
 
-LayScope 按独立的新扩展安装。先停用旧工具并刷新已注入的页面，再选择本项目 `dist/chromium`，在新扩展里重新设置规则和主机授权；不迁移或删除旧配置。后续更新 LayScope 时保持其自身路径并原位重载。构建目录包含 MIT `LICENSE`。
+更新下载包时替换同一安装目录中的文件，并在扩展管理页重新加载；下载包不会自动更新。打包和校验步骤见[中文使用说明](../../README.md#下载发布包)。
+
+LayScope 按独立的新扩展安装。先停用旧工具并刷新已注入的页面，再选择下载包解压目录或本项目 `dist/chromium`，在新扩展里重新设置规则和主机授权；不迁移或删除旧配置。后续更新 LayScope 时保持其自身路径并原位重载。构建目录包含 MIT `LICENSE`。
 
 点击工具栏入口，紧凑弹层显示当前主机、路径及实例状态。“当前页面”中面板、显示布局、悬浮入口是独立开关；未加载时打开面板不会显示布局，打开布局则静默加载并保持面板收起。入口开关在加载后可用，保留站点偏好。“移除”只释放本页实例，不停用自动加载规则。0.8.0 起，同一核心函数通过 `chrome.scripting.executeScript` 在顶层页面的 MAIN 世界执行，以读取页面的 Vue 3 元数据；核心不使用扩展 API。浏览器保护页面不能注入，错误明确显示。
 

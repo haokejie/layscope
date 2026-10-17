@@ -25,6 +25,21 @@ LayScope runs directly on the page. Explore component boundaries, the rendered D
 
 The Codex plugin requires a browser tool with a CDP capability. It is a separate integration, not a Chromium extension installed inside Codex Browser. Inspecting a page does not require adding a package or script to that page's application.
 
+## Download a release
+
+Once a version is published, download its files from **Assets** on [GitHub Releases](https://github.com/haokejie/layscope/releases). You do not need Node.js or a local build:
+
+| File (v0.8.1 example) | Purpose |
+| --- | --- |
+| `layscope-chromium-v0.8.1.zip` | Chrome / Edge browser extension |
+| `layscope-codex-v0.8.1.zip` | Codex Browser plugin |
+| `build.json` | Version and SHA-256 of the shared core |
+| `SHA256SUMS.txt` | SHA-256 checksums for the three files above |
+
+GitHub's automatically generated **Source code (zip)** is not an installation package: it does not contain the built core. If no release is available yet, build from source below.
+
+Optional verification: download both ZIPs, `build.json` and `SHA256SUMS.txt` into one directory. From that directory, run `shasum -a 256 -c SHA256SUMS.txt` on macOS, or `sha256sum -c SHA256SUMS.txt` on Linux.
+
 ## Build from source
 
 Requirements: Node.js **22 or later** and npm. The repository pins its development versions in [.nvmrc](.nvmrc) and [package.json](package.json).
@@ -50,14 +65,16 @@ The project has no npm runtime or development dependencies. Builds produce:
 | `dist/codex/` | Codex plugin, bundled skill and shared core, including its MIT license |
 | `dist/build.json` | Version and shared-core SHA-256 |
 
-Installation currently uses local builds; this repository does not provide a browser-store installation link or a public plugin-directory listing.
+Install from a Release download or a local build. LayScope is not currently listed in a browser store or a public Codex plugin directory.
 
 ## Install in Chrome / Edge
 
-1. Open `chrome://extensions` in Chrome, or `edge://extensions` in Edge.
-2. Enable **Developer mode**.
-3. Select **Load unpacked** and choose `dist/chromium/` from this repository.
+1. Extract `layscope-chromium-vX.Y.Z.zip` into a permanent directory such as `layscope-chromium/`. It must contain `manifest.json` directly. For a source build, use `dist/chromium/`.
+2. Open `chrome://extensions` in Chrome, or `edge://extensions` in Edge.
+3. Enable **Developer mode**, select **Load unpacked**, and choose the directory containing `manifest.json`.
 4. Open the HTTP(S) page you want to inspect, then click **LayScope** in the browser toolbar. Pin it if convenient.
+
+Keep that installation directory. To update, extract the new package and replace the files in the same directory, then click **Reload** on the extensions page. GitHub downloads use developer-mode installation and do not update automatically; you do not need to remove and reinstall the extension for each update.
 
 Chrome / Edge 106 or later is required. The current interface is in Chinese; the controls below include their visible labels.
 
@@ -92,7 +109,7 @@ Patterns distinguish protocol, host, port and path, while ignoring query strings
 
 ## Use in Codex Browser
 
-Build the project, then register `dist/codex/` as a local plugin source using the [Codex integration guide](adapters/codex/README.md#安装与使用). After installing and enabling **LayScope** in a supported client, ask, for example:
+Extract `layscope-codex-vX.Y.Z.zip` into a directory containing `plugin.json`, `skills/` and `LICENSE` directly, or use a local build at `dist/codex/`. Register that directory as a local plugin source using the [Codex integration guide](adapters/codex/README.md#安装与使用). After installing and enabling **LayScope** in a supported client, ask, for example:
 
 > Use LayScope to open the inspector on the current Browser page. Keep the layout overlay off.
 
@@ -131,7 +148,7 @@ Rules stay in the extension's local storage. Site preferences stay in that origi
 
 LayScope uses its own project directory, plugin/skill IDs, runtime and storage namespace. Install it as a new tool. It does not read or migrate previous-product rules, host grants or site preferences, and does not delete the old data.
 
-Close or disable the previous tool and refresh pages that contain its inspector before switching, so the two inspectors do not run together. Load this project's `dist/chromium/` in Chrome / Edge, or install the new `layscope` plugin/skill in Codex. Set up automatic-loading rules and approve host access again in LayScope.
+Close or disable the previous tool and refresh pages that contain its inspector before switching, so the two inspectors do not run together. In Chrome / Edge, load the extracted download directory or this project's `dist/chromium/`; in Codex, install the new `layscope` plugin/skill. Set up automatic-loading rules and approve host access again in LayScope.
 
 For subsequent LayScope updates, keep its own source path, reload the extension and reopen its popup. When a page instance is outdated, use **Update instance** (`更新实例`) or refresh the page. Rebuilding files and refreshing a business page alone does not reload a cached extension background worker.
 
@@ -140,9 +157,33 @@ For subsequent LayScope updates, keep its own source path, reload the extension 
 ```sh
 npm run dev          # http://127.0.0.1:8094/
 npm run fixture:vue  # Prepare the pinned Vue runtime in the system temp directory
+npm run test:package # Check real ZIPs, checksums, versions and stale-asset cleanup
+npm run package      # Rebuild both adapters and create dist/release/ downloads
 ```
 
 The local server offers lifecycle, interaction and deep-hierarchy audits at `/`, real Vue audits at `/vue/` and `/vue-production/`, and extension-API substitute previews at `/popup/` and `/rules/`. These previews do not replace acceptance through a real installed extension. Vue fixture preparation verifies the downloaded archive's SHA-512 and does not add a dependency.
+
+Packaging and packaging tests require system `zip` and `unzip` commands, included on macOS and GitHub's Ubuntu runners. Regular `npm test` still only requires Node.js. Use `npm run package -- v0.8.1` to also check the tag against the source version.
+
+### GitHub Actions and releases
+
+- [CI](.github/workflows/ci.yml) runs `npm ci --ignore-scripts`, `npm test` and `npm run test:package` on pushes to any branch and on new or updated pull requests. You can also run it manually from Actions. Cloud tests run after a push to GitHub; a local `git commit` alone does not trigger them.
+- [Release](.github/workflows/release.yml) repeats tests, builds and packages on pushed `v*` tags, then creates a GitHub Release with generated notes and all four download files. It uses GitHub's built-in `GITHUB_TOKEN`; no personal token is required.
+- Both workflows use the standard `ubuntu-latest` runner for public repositories, disable package-manager caching and do not upload intermediate Actions artifacts. Downloads go directly to Releases. They do not publish to browser stores or npm.
+
+To publish a new version:
+
+1. Update root `package.json` and `package-lock.json`, for example with `npm version patch --no-git-tag-version`. Commit and push the reviewed changes. Versions must be `X.Y.Z`, with each component no greater than 65535; prerelease suffixes are not supported.
+2. Create and push an exactly matching tag for that commit. For version `0.8.2`:
+
+   ```sh
+   git tag -a v0.8.2 -m "LayScope v0.8.2"
+   git push origin v0.8.2
+   ```
+
+3. Confirm the Release workflow succeeds in [Actions](https://github.com/haokejie/layscope/actions), then check the downloads in [Releases](https://github.com/haokejie/layscope/releases). The first release may use `v0.8.1` for the current `0.8.1` version, provided that tag's commit contains the release workflow.
+
+Version or lockfile mismatches stop publication. An existing Release with the same tag causes failure rather than overwriting published files. Branch pushes do not publish releases, and deleting a remote tag does not automatically delete its Release.
 
 Development guides: [conventions](CONVENTIONS.md), [shared core](packages/core/README.md), [Chrome / Edge](adapters/chromium/README.md), [Codex Browser](adapters/codex/README.md).
 
